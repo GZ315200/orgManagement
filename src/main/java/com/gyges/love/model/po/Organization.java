@@ -1,20 +1,19 @@
 package com.gyges.love.model.po;
 
-import javax.persistence.Column;;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+
+import javax.persistence.*;;
 
 /**
  * Created by gygesM on 2016/10/2.
  */
-@Entity(name = "organization")
+@Entity
+@Table(name = "organization")
 public class Organization{
     /**
      * 机构id
      */
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
     /**
      * 机构账号

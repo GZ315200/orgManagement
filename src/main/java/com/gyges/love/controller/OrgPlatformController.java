@@ -7,6 +7,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
@@ -24,27 +26,40 @@ public class OrgPlatformController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(OrgPlatformController.class);
 
-    @RequestMapping(value = "/select")
+    @RequestMapping(value = "/select",method = RequestMethod.GET)
     @ResponseBody
-    public Response getQueryResult(String account, String orgName, String createTime) {
+    public Response getQueryResult(@RequestParam(required = false) String account,
+                                   @RequestParam(required = false) String company,
+                                   @RequestParam(required = false) String createTime) {
         Response response = new Response();
-        Organization organization = orgService.findOrgName(account, orgName, createTime);
-        response.setCode(1);
-        response.setData(organization);
+        try {
+            Organization organization = orgService.findOrgName(account, company, createTime);
+            response.setCode(1);
+            response.setData(organization);
+        }catch (Exception ex){
+            ex.printStackTrace();
+            LOGGER.error("查询失败",ex);
+        }
         return response;
     }
 
-    @RequestMapping(value = "/save")
+    @RequestMapping(value = "/save",method = RequestMethod.PUT)
     @ResponseBody
-    public Response<Organization> getSaveResult(Integer id, String account, String orgName) {
+    public Response<Organization> getSaveResult(Integer id, String account, String company) {
         Response response = new Response();
-        Organization organization = orgService.saveOrgInfo(id, account, orgName);
-        response.setCode(1);
-        response.setData(organization);
+        try {
+            Organization organization = orgService.saveOrgInfo(id, account, company);
+            response.setCode(1);
+            response.setData(organization);
+        }catch (Exception ex){
+            ex.printStackTrace();
+            LOGGER.error("插入失败");
+        }
+
         return response;
     }
 
-    @RequestMapping(value = "/delete")
+    @RequestMapping(value = "/delete",method = RequestMethod.DELETE)
     @ResponseBody
     public Response getDeleteResult(Integer id) {
         Response response = new Response();
@@ -59,13 +74,18 @@ public class OrgPlatformController {
         return response;
     }
 
-    @RequestMapping(value = "/update")
+    @RequestMapping(value = "/update",method = RequestMethod.PUT)
     @ResponseBody
     public Response getSaveResult(Integer id, String account) {
         Response response = new Response();
-        Organization organization = orgService.updateOrgAccount(id, account);
-        response.setCode(1);
-        response.setData(organization);
+        try {
+            Organization organization = orgService.updateOrgAccount(id, account);
+            response.setCode(1);
+            response.setData(organization);
+        }catch (Exception ex) {
+            ex.printStackTrace();
+            LOGGER.error("更新失败", ex);
+        }
         return response;
     }
 }

@@ -1,8 +1,6 @@
 package com.gyges.love.service;
 
 import com.gyges.love.dao.OrgRepository;
-import com.gyges.love.model.common.Response;
-import com.gyges.love.model.common.Status;
 import com.gyges.love.model.po.Organization;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,13 +22,14 @@ public class OrgService {
     public static final Logger LOGGER = LoggerFactory.getLogger(OrgService.class);
     public static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-    public Organization saveOrgInfo(int id, String orgName, String account) {
+    public Organization saveOrgInfo(int id, String company, String account) {
         String time = dateFormat.format(new Date());
-        Organization organization = new Organization();
+        Organization organization = new Organization(id,account,company,time);
         organization.setAccount(account);
         organization.setId(id);
-        organization.setOrgName(orgName);
+        organization.setOrgName(company);
         organization.setCreateTime(time);
+        crudDao.save(organization);
         return organization;
     }
 
@@ -41,16 +40,12 @@ public class OrgService {
         return organization;
     }
 
-    public Organization findOrgName(String account, String orgName, String createTime){
+    public Organization findOrgName(String account, String company, String createTime){
         Organization organization = new Organization();
-        Response<Status> response = new Response<>();
-        Status status = null;
-        status = Status.SUCCESS;
-        response.setData(status);
         organization.setAccount(account);
-        organization.setOrgName(orgName);
+        organization.setOrgName(company);
         organization.setCreateTime(createTime);
-        crudDao.findAll(organization);
+        crudDao.findByAccountAndOrgNameAndCreateTime(account,company,createTime);
         return organization;
     }
     public Organization updateOrgAccount(Integer id, String account){

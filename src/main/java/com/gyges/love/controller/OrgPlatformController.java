@@ -21,37 +21,39 @@ import javax.annotation.Resource;
 @RequestMapping(value = "/")
 public class OrgPlatformController {
 
-   @Resource
-   OrgService orgService;
+    @Resource
+    OrgService orgService;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(OrgPlatformController.class);
 
-    @RequestMapping(value = "/select",method = RequestMethod.GET)
+    @RequestMapping(value = "/select", method = RequestMethod.GET)
     @ResponseBody
-    public Response getQueryResult(@RequestParam(required = false) String account,
+    public Response getQueryResult(@RequestParam String account,
                                    @RequestParam(required = false) String company,
                                    @RequestParam(required = false) String createTime) {
         Response response = new Response();
         try {
-            Organization organization = orgService.findOrgName(account, company, createTime);
-            response.setCode(1);
+            Organization organization = orgService.findOrgName(account,company,createTime);
+            response.setSuccess(true);
             response.setData(organization);
-        }catch (Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
-            LOGGER.error("查询失败",ex);
+            LOGGER.error("查询失败", ex);
         }
         return response;
     }
 
-    @RequestMapping(value = "/save",method = RequestMethod.PUT)
+    @RequestMapping(value = "/save", method = RequestMethod.PUT)
     @ResponseBody
-    public Response<Organization> getSaveResult(Integer id, String account, String company) {
+    public Response<Organization> getSaveResult(
+            @RequestParam String account,
+            @RequestParam String company) {
         Response response = new Response();
         try {
-            Organization organization = orgService.saveOrgInfo(id, account, company);
-            response.setCode(1);
+            Organization organization = orgService.saveOrgInfo(account, company);
+            response.setSuccess(true);
             response.setData(organization);
-        }catch (Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
             LOGGER.error("插入失败");
         }
@@ -59,30 +61,31 @@ public class OrgPlatformController {
         return response;
     }
 
-    @RequestMapping(value = "/delete",method = RequestMethod.DELETE)
+    @RequestMapping(value = "/delete", method = RequestMethod.DELETE)
     @ResponseBody
-    public Response getDeleteResult(Integer id) {
+    public Response getDeleteResult(@RequestParam(required = false) String id) {
         Response response = new Response();
         try {
             Organization organization = orgService.deleteOrgAccount(id);
-            response.setCode(1);
+            response.setSuccess(true);
             response.setData(organization);
-        }catch (Exception e){
+        } catch (Exception e) {
             LOGGER.error("删除失败");
         }
 
         return response;
     }
 
-    @RequestMapping(value = "/update",method = RequestMethod.PUT)
+    @RequestMapping(value = "/update", method = RequestMethod.PUT)
     @ResponseBody
-    public Response getSaveResult(Integer id, String account) {
+    public Response getUpdateResult(@RequestParam(required = false) String id,
+                                  @RequestParam String account) {
         Response response = new Response();
         try {
             Organization organization = orgService.updateOrgAccount(id, account);
-            response.setCode(1);
+            response.setSuccess(true);
             response.setData(organization);
-        }catch (Exception ex) {
+        } catch (Exception ex) {
             ex.printStackTrace();
             LOGGER.error("更新失败", ex);
         }

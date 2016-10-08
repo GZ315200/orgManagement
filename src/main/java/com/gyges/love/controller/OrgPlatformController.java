@@ -68,7 +68,7 @@ public class OrgPlatformController {
         try {
             Organization organization = orgService.deleteOrgAccount(id);
             response.setSuccess(true);
-            response.setData(organization);
+            response.setData(organization.getId());
         } catch (Exception e) {
             LOGGER.error("删除失败");
         }

@@ -1,7 +1,8 @@
 package com.gyges.love.model.po;
 
 
-import javax.persistence.*;;
+
+import javax.persistence.*;
 
 /**
  * Created by gygesM on 2016/10/2.
@@ -13,8 +14,7 @@ public class Organization{
      * 机构id
      */
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+    private String id;
     /**
      * 机构账号
      */
@@ -24,40 +24,30 @@ public class Organization{
      * 公司名称
      */
     @Column(nullable = false,name = "company")
-    private String orgName;
+    private String company;
+
+    private String createTime;
 
     public Organization() {
     }
 
-    public Organization(String account, String orgName, String createTime) {
-        this.account = account;
-        this.orgName = orgName;
-        this.createTime = createTime;
-    }
-
-    public Organization(int id,String account, String orgName) {
-        this.account = account;
-        this.orgName = orgName;
-    }
-
-    public Organization(int id, String account, String orgName, String createTime) {
+    public Organization(String id, String account, String company, String createTime) {
         this.id = id;
         this.account = account;
-        this.orgName = orgName;
+        this.company = company;
         this.createTime = createTime;
     }
 
-    /**
-     * 创建时间
-     */
+    public Organization(String account, String createTime) {
+        this.account = account;
+        this.createTime = createTime;
+    }
 
-    private String createTime;
-
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -69,12 +59,12 @@ public class Organization{
         this.account = account;
     }
 
-    public String getOrgName() {
-        return orgName;
+    public String getCompany() {
+        return company;
     }
 
-    public void setOrgName(String orgName) {
-        this.orgName = orgName;
+    public void setCompany(String company) {
+        this.company = company;
     }
 
     public String getCreateTime() {
@@ -85,13 +75,10 @@ public class Organization{
         this.createTime = createTime;
     }
 
-    @Override
-    public String toString() {
-        return "Organization{" +
-                "id=" + id +
-                ", account='" + account + '\'' +
-                ", orgName='" + orgName + '\'' +
-                ", createTime='" + createTime + '\'' +
-                '}';
-    }
+    /**
+     * 创建时间
+     */
+
+
+
 }

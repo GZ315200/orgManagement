@@ -5,8 +5,8 @@ package com.gyges.love.model.common;
  */
 public class Response<T> {
 
+    boolean success = true;
     T data;
-    int code;
 
     public Response(T data) {
         this.data = data;
@@ -15,9 +15,9 @@ public class Response<T> {
     public Response() {
     }
 
-    public Response(T data, int code) {
+    public Response(boolean success, T data) {
         this.data = data;
-        this.code = code;
+        this.success = success;
     }
 
     public T getData() {
@@ -28,11 +28,11 @@ public class Response<T> {
         this.data = data;
     }
 
-    public int getCode() {
-        return code;
+    public boolean isSuccess() {
+        return success;
     }
 
-    public void setCode(int code) {
-        this.code = code;
+    public void setSuccess(boolean success) {
+        this.success = success;
     }
 }
